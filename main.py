@@ -2,6 +2,10 @@ import pygame
 import sys
 import json
 import random
+import cv2
+import time
+from recognition import capture_emotion  # Assuming capture_emotion is in the recognition module
+from fer import FER
 
 # Initialize pygame
 pygame.init()
@@ -37,57 +41,32 @@ button_text = button_font.render("Get Started", True, WHITE)
 button_width, button_height = 200, 60
 button_rect = pygame.Rect((screen_width // 2 - button_width // 2, screen_height // 1.5), (button_width, button_height))
 
-# Questions and options
-questions = [
-    {
-        "question": "What is your area of expertise?",
-        "options": ["Software Development", "Data Science", "Product Management", "Cybersecurity"]
-    },
-    {
-        "question": "How many years of experience do you have?",
-        "options": ["0-2 years", "3-5 years", "6-10 years", "10+ years"]
-    },
-]
+emotion_detector = FER()
+cam = cv2.VideoCapture(0)
 
-def question_slide(question_data):
+def question_slide(question_data, emotion_detector, cam):
 
     question_text = text_font.render(question_data[1], True, WHITE)
     question_rect = question_text.get_rect(center=(screen_width // 2, screen_height // 4))
 
-    # Generate option surfaces and rectangles
-    option_rects = []
+    # Drawing
+    screen.fill(DARK_BLUE)
+    screen.blit(question_text, question_rect)
+    pygame.display.flip()
 
-    option_surface = text_font.render("yes", True, DARK_BLUE)
-    option_rect = option_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 1 * 50))
-    option_rects.append(("yes", option_surface, option_rect))  # Store the text, surface, and rect
+    # Capture emotion for 5 seconds
+    emotion = capture_emotion(cam, emotion_detector)  
+    print(f"Captured emotion: {emotion}")  
 
-    option_surface = text_font.render("no", True, DARK_BLUE)
-    option_rect = option_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 2 * 50))
-    option_rects.append(("no", option_surface, option_rect))  # Store the text, surface, and rect
+    # Display captured emotion (for debugging)
+    emotion_text = text_font.render(f"Emotion: {emotion}", True, LIGHT_BLUE)
+    emotion_rect = emotion_text.get_rect(center=(screen_width // 2, screen_height // 2 + 50))
+    screen.blit(emotion_text, emotion_rect)
+    pygame.display.flip()
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                for option_text, option_surface, option_rect in option_rects:
-                    if option_rect.collidepoint(event.pos):
-                        print(f"Selected option: {option_text}")  # Use option_text directly
-                        return question_data[0] # Move to the next slide or end the quiz
+    pygame.time.delay(2000)
 
-        # Drawing
-        screen.fill(DARK_BLUE)
-        screen.blit(question_text, question_rect)
-
-        # Draw each option
-        mouse_pos = pygame.mouse.get_pos()
-        for option_text, option_surface, option_rect in option_rects:
-            color = OPTION_HOVER_COLOR if option_rect.collidepoint(mouse_pos) else OPTION_COLOR
-            pygame.draw.rect(screen, color, option_rect.inflate(10, 10))  # Draw background rectangle for option
-            screen.blit(option_surface, option_rect)
-
-        pygame.display.flip()
+    return emotion, question_data[0]
 
 def load_policies():
     kamalaPolicy = json.load(open("policies.json"))[0]["policies"][0]
@@ -121,15 +100,35 @@ def main_menu():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     print("Get Started button clicked!")
-                    for question_data in policies:
-                        point = question_slide(question_data)
+                    for question_data in policies[:5]:
+                        point = question_slide(question_data, emotion_detector, cam)
+                        
+                        if point[0] == "happy":
 
-                        if point == "t":
-                            TrumpPoints += 1
-                        else:
-                            KamalaPoints += 1
+                            if point[1] == "t":
+                                TrumpPoints += 1
+                            else:
+                                KamalaPoints += 1
+
+                        elif point[0] == "sad":
+                            if point[1] == "t":
+                                TrumpPoints -= 1
+                            else:
+                                KamalaPoints -= 1
+
+                        elif point[0] == "angry":
+                            if point[1] == "t":
+                                TrumpPoints -= 1
+                            else:
+                                KamalaPoints -= 1
+
+                        elif point[0] == "surprise":
+                            if point[1] == "t":
+                                TrumpPoints -= 1
+                            else:
+                                KamalaPoints -= 1
                             
-                    return
+                    return (KamalaPoints, TrumpPoints)
 
         # Drawing main menu
         screen.fill(DARK_BLUE)
@@ -147,6 +146,17 @@ def main_menu():
 
         pygame.display.flip()
 
+
+def display_result(result):
+    result_text = text_font.render(f"Kamala Points: {result[0]} | Trump Points: {result[1]}", True, WHITE)
+    result_rect = result_text.get_rect(center=(screen_width // 2, screen_height // 2))
+    screen.fill(DARK_BLUE)
+    screen.blit(result_text, result_rect)
+    pygame.display.flip()
+    pygame.time.delay(5000)
+    return
+
 # Run the main menu
-main_menu()
+result = main_menu()
+display_result(result)
 pygame.quit()

@@ -1,74 +1,45 @@
-import sys
+# recognition.py
 import cv2
-import numpy as np
-import subprocess
 import time
 from fer import FER  # Import FER for facial emotion detection
 
-def capture_emotion():
-    # Initialize the FER emotion detector
-    emotion_detector = FER()
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-    #Camera for capturing video
-    cam = cv2.VideoCapture(0)
-
-    frame_width = int(cam.get(cv2.CAP_PROP_FRAME_WIDTH))
-    frame_height = int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-
-
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+def capture_emotion(cam, emotion_detector):
+    # Start timer
     start_time = time.time()
-    duration = 8
-
     final_emotion = None
 
-    #While the duration is not up yet, capture frames and detect faces
-    while time.time() - start_time < duration:
-        try:
-            ret, frame = cam.read()
-            if not ret:
-                break
-            
-            flipped_frame = cv2.flip(frame, 1)
-            elapsed_time = time.time() - start_time
-                
-            gray = cv2.cvtColor(flipped_frame, cv2.COLOR_BGR2GRAY)
-            faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
-            
-            if len(faces) > 0:
-                for (x, y, w, h) in faces:
-                    face_img = flipped_frame[y:y + h, x:x + w]
-                    emotion, _ = emotion_detector.top_emotion(face_img)
-                    final_emotion = emotion  # Update final_emotion in each iteration
-                    
-                    cv2.rectangle(flipped_frame, (x, y), (x + w, y + h), (100, 84, 48), 5)
-                    cv2.putText(flipped_frame, f"Emotion: {emotion}", (x, y - 10),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
+    while time.time() - start_time < 5:  # Run for 5 seconds
+        ret, frame = cam.read()
+        if not ret:
+            break
 
-            cv2.imshow('Camera', flipped_frame)
-            
-            # Display remaining time
-            remaining_time = max(0, duration - elapsed_time)
-            cv2.putText(flipped_frame, f"Time left: {remaining_time:.1f}s", (10, 30),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-            
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break
-        except Exception as e:
-            print(f"Error: {e}")
+        flipped_frame = cv2.flip(frame, 1)
+        gray = cv2.cvtColor(flipped_frame, cv2.COLOR_BGR2GRAY)
 
-    # After the loop ends, capture the last frame as the final emotion
-    if len(faces) > 0:
-        x, y, w, h = faces[0]  # Assuming we're interested in the first detected face
-        face_img = flipped_frame[y:y + h, x:x + w]
-        final_emotion, _ = emotion_detector.top_emotion(face_img)
+        # Detect faces
+        faces = face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
+        
+        if len(faces) > 0:
+            for (x, y, w, h) in faces:
+                face_img = flipped_frame[y:y + h, x:x + w]
+                emotion, _ = emotion_detector.top_emotion(face_img)
+                if emotion == None:
+                    emotion = final_emotion
+                final_emotion = emotion  # Update final_emotion with each iteration
 
-    cam.release()
+                # Draw rectangle around the face and display detected emotion
+                cv2.rectangle(flipped_frame, (x, y), (x + w, y + h), (100, 84, 48), 5)
+                cv2.putText(flipped_frame, f"Emotion: {emotion}", (x, y - 10),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2, cv2.LINE_AA)
+
+        # Display the frame
+        cv2.imshow('Camera', flipped_frame)
+
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break  # Stop if 'q' is pressed
+
+    # Close the camera window
     cv2.destroyAllWindows()
-
     return final_emotion
-
-if __name__ == "__main__":
-    detected_emotion = capture_emotion()
-    print(f"Final captured emotion: {detected_emotion}")
