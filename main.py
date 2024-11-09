@@ -26,7 +26,7 @@ OPTION_HOVER_COLOR = (150, 150, 150)
 
 # Fonts
 title_font = pygame.font.Font(None, 74)
-text_font = pygame.font.Font(None, 46)
+text_font = pygame.font.Font(None, 36)
 button_font = pygame.font.Font(None, 48)
 
 # Texts
