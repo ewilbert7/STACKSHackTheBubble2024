@@ -11,7 +11,7 @@ from fer import FER
 pygame.init()
 
 # Screen settings
-screen_width, screen_height = 800, 600
+screen_width, screen_height = 1600, 1000
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption("Candidate Connect")
 
@@ -26,7 +26,7 @@ OPTION_HOVER_COLOR = (150, 150, 150)
 
 # Fonts
 title_font = pygame.font.Font(None, 74)
-text_font = pygame.font.Font(None, 36)
+text_font = pygame.font.Font(None, 46)
 button_font = pygame.font.Font(None, 48)
 
 # Texts
@@ -47,7 +47,7 @@ cam = cv2.VideoCapture(0)
 def question_slide(question_data, emotion_detector, cam):
 
     question_text = text_font.render(question_data[1], True, WHITE)
-    question_rect = question_text.get_rect(center=(screen_width // 2, screen_height // 4))
+    question_rect = question_text.get_rect(center=(screen_width // 2, screen_height-100))
 
     # Drawing
     screen.fill(DARK_BLUE)
