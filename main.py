@@ -148,15 +148,34 @@ def main_menu():
 
 
 def display_result(result):
-    result_text = text_font.render(f"Kamala Points: {result[0]} | Trump Points: {result[1]}", True, WHITE)
-    result_rect = result_text.get_rect(center=(screen_width // 2, screen_height // 2))
+    # Check who has the higher points
+    if result[0] > result[1]:  # Kamala Harris has more points
+        candidate_name = "Kamala Harris"
+        candidate_image_path = "images/kamala-harris.jpeg"
+    else:  # Trump has more or equal points
+        candidate_name = "Donald Trump"
+        candidate_image_path = "images/donald-trump-mcdonalds.jpg"
+
+    # Load the appropriate image
+    candidate_image = pygame.image.load(candidate_image_path)
+    candidate_image = pygame.transform.scale(candidate_image, (300, 300))  # Adjust size as needed
+    image_rect = candidate_image.get_rect(center=(screen_width // 2, screen_height // 2 - 50))
+
+    # Display result text
+    result_text = text_font.render(f"We match you to {candidate_name}", True, WHITE)
+    result_rect = result_text.get_rect(center=(screen_width // 2, screen_height // 2 + 200))
+
+    # Clear the screen and display the image and text
     screen.fill(DARK_BLUE)
+    screen.blit(candidate_image, image_rect)
     screen.blit(result_text, result_rect)
     pygame.display.flip()
+
+    # Delay before closing or moving to the next step
     pygame.time.delay(5000)
-    return
 
 # Run the main menu
 result = main_menu()
 display_result(result)
 pygame.quit()
+
