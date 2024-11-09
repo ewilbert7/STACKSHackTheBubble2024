@@ -19,7 +19,7 @@ out = cv2.VideoWriter('output.mp4', fourcc, 20.0, (frame_width, frame_height))
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 start_time = time.time()
-duration = 5
+duration = 8
 
 #While the duration is not up yet, capture frames and detect faces
 while time.time() - start_time < duration:
