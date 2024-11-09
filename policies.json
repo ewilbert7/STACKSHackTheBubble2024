@@ -1,0 +1,101 @@
+[
+    {
+        "name": "Kamala Harris",
+        "sex": "Female",
+        "policies": [
+            {
+                "economy": ["increase corporate tax rate"],
+                "immigration": [
+                    "immigration system is 'broken' and needs comprehensive reform",
+                    "supports border security bill to increase detection technology for drugs",
+                    "add 1,500 border security agents",
+                    "provide an earned pathway to citizenship",
+                    "increase legal immigration by expanding employment-based and family visas"
+                ],
+                "housing": [
+                    "build three million affordable homes",
+                    "reduce regulations to expedite home building",
+                    "penalize companies that hoard homes and inflate prices",
+                    "provide first-time homebuyers with up to $25,000 for downpayments"
+                ],
+                "workers_rights": [
+                    "sign pro-union legislation like the PRO Act to limit employer interference in trade unions",
+                    "end taxes on tips for service and hospitality workers",
+                    "raise the minimum wage and eliminate sub-minimum wages for tipped workers"
+                ],
+                "foreign_policy": [
+                    "protect US forces from Iran and prevent Iran from becoming a nuclear power",
+                    "support Israels right to defend itself, oppose arms embargo",
+                    "end the war in Gaza and support Palestinian rights",
+                    "stay competitive with China, support Taiwan's defense, and hold China accountable for human rights abuses",
+                    "support Ukraine against Russia as long as it takes"
+                ],
+                "crime_and_justice": [
+                    "ban assault weapons and high-capacity magazines, increase background checks",
+                    "invest in law enforcement",
+                    "address opioid epidemic",
+                    "oppose presidential immunity for crimes committed in office",
+                    "propose Supreme Court reforms, including ethics rules and term limits for Justices"
+                ],
+                "environment": [
+                    "build on Inflation Reduction Act with green initiatives to combat climate change",
+                    "continue US global climate leadership",
+                    "support clean air, water, and reduction of pollution"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "Donald Trump",
+        "sex": "Male",
+        "policies": [
+            {
+                "economy": [
+                    "reduce corporate tax rate to 15%",
+                    "reduce government spending",
+                    "cut taxes on workers, no taxes on tips",
+                    "increase tariffs on foreign-made goods",
+                    "promote 'Buy American, hire American'"
+                ],
+                "immigration": [
+                    "deport millions of undocumented migrants in a large-scale operation",
+                    "use military to 'seal the border' and construct detention facilities",
+                    "reinstate 'Remain in Mexico' policy for asylum-seekers",
+                    "end birthright citizenship for children of undocumented parents",
+                    "impose ideological screening of immigrants",
+                    "offer automatic green cards to foreign graduates of US universities",
+                    "reduce immigration levels"
+                ],
+                "housing": [
+                    "reduce mortgage rates by lowering inflation",
+                    "open federal land for homebuilding",
+                    "reduce housing costs by limiting immigration, which he blames for higher prices"
+                ],
+                "workers_rights": [
+                    "cut taxes on workers and eliminate taxes on overtime pay",
+                    "oppose the PRO Act and support firing striking workers",
+                    "no support for pro-union legislation"
+                ],
+                "foreign_policy": [
+                    "promote 'Peace through strength' to prevent global conflicts",
+                    "secure strategic independence from China, but maintain a 'good relationship'",
+                    "support Israel and seek peace in the Middle East",
+                    "end the war in Ukraine, no commitment to further aid for Ukraine against Russia"
+                ],
+                "crime_and_justice": [
+                    "combat 'migrant crime epidemic'",
+                    "defeat drug cartels and end gang violence, propose death penalty for drug dealers",
+                    "provide immunity to police from prosecution",
+                    "support rehabilitation programs for nonviolent offenders"
+                ],
+                "environment": [
+                    "withdraw from the Paris Agreement on climate change",
+                    "cancel electric vehicle mandates",
+                    "roll back environmental regulations, especially on fossil fuel production",
+                    "oppose the Inflation Reduction Act",
+                    "promote nuclear energy"
+                ]
+            }
+        ]
+    }
+]
