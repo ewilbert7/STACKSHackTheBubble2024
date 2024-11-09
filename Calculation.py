@@ -31,13 +31,13 @@ class Calculation:
         This method calculates the score based on emotion and the stance of the candidate.
         """
         if stance == "increasetax":
-            if emotion in ["happy", "smile"]:
+            if emotion in ["happy"]:
                 self.scores["Kamala"] += 1  # Kamala's score increases
             elif emotion in ["sad"]:
                 self.scores["Trump"] += 1  # Trump's score increases
         
         elif stance == "restrictimmigration":
-            if emotion in ["happy", "smile"]:
+            if emotion in ["happy"]:
                 self.scores["Trump"] += 1  # Trump's score increases
             elif emotion in ["sad"]:
                 self.scores["Kamala"] += 1  # Kamala's score increases
@@ -72,6 +72,7 @@ class Calculation:
             print(f"Current score for Trump: {self.get_score('Trump')}")
             print("------")
 
+    
 
     
 
