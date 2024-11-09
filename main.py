@@ -50,15 +50,20 @@ questions = [
 ]
 
 def question_slide(question_data):
-    question_text = text_font.render(question_data["question"], True, WHITE)
+
+    question_text = text_font.render(question_data[1], True, WHITE)
     question_rect = question_text.get_rect(center=(screen_width // 2, screen_height // 4))
 
     # Generate option surfaces and rectangles
     option_rects = []
-    for i, option in enumerate(question_data["options"]):
-        option_surface = text_font.render(option, True, DARK_BLUE)
-        option_rect = option_surface.get_rect(center=(screen_width // 2, screen_height // 2 + i * 50))
-        option_rects.append((option, option_surface, option_rect))  # Store the text, surface, and rect
+
+    option_surface = text_font.render("yes", True, DARK_BLUE)
+    option_rect = option_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 1 * 50))
+    option_rects.append(("yes", option_surface, option_rect))  # Store the text, surface, and rect
+
+    option_surface = text_font.render("no", True, DARK_BLUE)
+    option_rect = option_surface.get_rect(center=(screen_width // 2, screen_height // 2 + 2 * 50))
+    option_rects.append(("no", option_surface, option_rect))  # Store the text, surface, and rect
 
     while True:
         for event in pygame.event.get():
@@ -69,7 +74,7 @@ def question_slide(question_data):
                 for option_text, option_surface, option_rect in option_rects:
                     if option_rect.collidepoint(event.pos):
                         print(f"Selected option: {option_text}")  # Use option_text directly
-                        return  # Move to the next slide or end the quiz
+                        return question_data[0] # Move to the next slide or end the quiz
 
         # Drawing
         screen.fill(DARK_BLUE)
@@ -91,29 +96,39 @@ def load_policies():
 
     for policy in kamalaPolicy:
         for p in kamalaPolicy[policy]:
-            policies.append(p)
+            policies.append(("k", p))
 
     for policy in trumpPolicy:
         for p in trumpPolicy[policy]:
-            policies.append(p)
+            policies.append(("t", p))
 
     random.shuffle(policies)
-    print(policies)
+    return policies
     
 
 def main_menu():
-    load_policies()
+    policies = load_policies()
+
     while True:
+        TrumpPoints = 0
+        KamalaPoints = 0
         
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if button_rect.collidepoint(event.pos):
                     print("Get Started button clicked!")
-                    for question_data in questions:
-                        question_slide(question_data)
+                    for question_data in policies:
+                        point = question_slide(question_data)
+
+                        if point == "t":
+                            TrumpPoints += 1
+                        else:
+                            KamalaPoints += 1
+                            
                     return
 
         # Drawing main menu
