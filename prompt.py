@@ -2,7 +2,7 @@ import openai
 import os
 
 # Set up OpenAI API key securely from environment variable (replace if using a direct key)
-openai.api_key = os.getenv("OPENAI_API_KEY", "import_key")
+openai.api_key = os.getenv("OPENAI_API_KEY", "add_key")
 
 # List of phrases
 phrases = [
@@ -20,7 +20,7 @@ for phrase in phrases:
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
-                {"role": "user", "content": f"Please turn the following phrase into a question: '{phrase}'"}
+                {"role": "user", "content": f"Please turn the following phrase into a prompt which asks the user how they feel about phrase: '{phrase}'"} 
             ]
         )
         
@@ -30,3 +30,5 @@ for phrase in phrases:
     except Exception as e:
         print(f"Error occurred for phrase '{phrase}': {e}")
         questions.append("Error occurred")
+
+print(questions)
