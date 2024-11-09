@@ -41,7 +41,11 @@ class Calculation:
                 self.scores["Trump"] += 1  # Trump's score increases
             elif emotion in ["sad"]:
                 self.scores["Kamala"] += 1  # Kamala's score increases
-                
+        elif stance == "immunityPolice":
+            if emotion in ["happy", "smile"]:
+                self.scores["Trump"]+=1
+            elif emotion in ["sad"]:
+                self.scores["Kamala"]+=1
 
     def get_score(self, figure):
     
@@ -76,7 +80,8 @@ scorer = Calculation()
 # Fake responses for testing
 responses = [
     {"question": "Do you agree that corporate tax should be increased?", "emotion": "happy"},  # Kamala's stance
-    {"question": "Do you think immigrants should be restricted from entering the country?", "emotion": "happy"}  # Trump's stance
+    {"question": "Do you think immigrants should be restricted from entering the country?", "emotion": "happy"},
+    {"question": "Do you think police should have immunity?", "emotion":"happy"}
 ]
 
 # Process each response and calculate the score
