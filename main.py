@@ -152,9 +152,12 @@ def display_result(result):
     if result[0] > result[1]:  # Kamala Harris has more points
         candidate_name = "Kamala Harris"
         candidate_image_path = "images/kamala-harris.jpeg"
-    else:  # Trump has more or equal points
+    elif result[1] > result[0]:  # Trump has more points
         candidate_name = "Donald Trump"
         candidate_image_path = "images/donald-trump-mcdonalds.jpg"
+    else:
+        candidate_name = "Both candidates have equal points"
+        candidate_image_path = "images/donald-trump-and-kamala.jpg"  # Placeholder image for equal points case
 
     # Load the appropriate image
     candidate_image = pygame.image.load(candidate_image_path)
