@@ -1,7 +1,5 @@
 # Candidate Connect
 
-Section 419 Presents
-
 ## Project Overview
 
 **Candidate Connect** is an interactive voter assistance tool designed to remove bias, educate voters, and boost democratic engagement. By presenting users with policy statements and capturing their reactions using facial emotion recognition, Candidate Connect identifies the candidate whose policies align most closely with each user’s values. This approach allows voters to make more informed choices based on policies rather than intuition or personal biases.
